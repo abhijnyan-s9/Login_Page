@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Signup Page</title>
+  <link rel="stylesheet" href="style.css">
+
+  
+</head>
+<body> <div class="container">
+    <h1 style="text-align: center; padding: 10px;">Sign Up</h1>
+
+   <input class="input-field" id="fullName" type="text" placeholder="Full Name" required />
+<input class="input-field" id="email" type="email" placeholder="Email" required />
+<input class="input-field" id="password" type="password" placeholder="Your password" required />
+
+<div class="checkbox">
+  <input type="checkbox" id="terms">
+  <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</label>
+</div>
+
+<button class="button" id="signup-btn">Sign up</button>
+
+
+    <div class="divider">
+        <span>or</span>
+    </div>
+
+    <button class="google-button">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" class="google-icon">
+               Continue with Google
+    </button>
+   <div class="footer" style="padding: 10px;">
+  Already have an account? <a href="login.html">Log in</a>
+</div>
+  </div>
+  <script>
+  document.getElementById("signup-btn").addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    const fullName = document.getElementById("fullName").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    try {
+      const res = await fetch("http://localhost:3000/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ fullName, email, password })
+      });
+
+      const data = await res.json();
+      if (res.status === 201) {
+  // Signup successful → redirect to Thank You page
+window.location.href = `thankyou.html?name=${encodeURIComponent(fullName)}`;
+
+} else {
+  alert(data.message || data.error);
+}
+
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong!");
+    }
+  });
+</script>
+
+</body>
+</html>
